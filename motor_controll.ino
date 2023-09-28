@@ -28,14 +28,16 @@ void LeftRotate() {
 void HardLeft() {
   analogWrite(PWM_R, BaseSpeed);
   analogWrite(PWM_L, BaseSpeed* 0.15);
-
+  Serial.println("Hard Left");
+  
+  Stop(150);
   digitalWrite(MotorL1, LOW);
   digitalWrite(MotorR1, LOW);
 
   digitalWrite(MotorR2, HIGH);
-  digitalWrite(MotorL2, HIGH); //
-
-  Serial.println("Left");
+  digitalWrite(MotorL2, HIGH); 
+  delay(440);
+  Stop(100);
 }
 
 
@@ -43,13 +45,16 @@ void HardLeft() {
 void HardRight() {
   analogWrite(PWM_R, BaseSpeed* 0.15);
   analogWrite(PWM_L, BaseSpeed);
+  Serial.println("Hard Right");
 
+  Stop(150);
   digitalWrite(MotorL1, HIGH);
   digitalWrite(MotorR1, HIGH); //
 
   digitalWrite(MotorR2, LOW);
   digitalWrite(MotorL2, LOW);
-  Serial.println("Right");
+  delay(440);
+  Stop(100);
 }
 
 void Forward(uint16_t leftMotorSpeed = BaseSpeed, uint16_t rightMotorSpeed = BaseSpeed) {
