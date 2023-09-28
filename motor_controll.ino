@@ -68,9 +68,6 @@ void Forward(uint16_t leftMotorSpeed = BaseSpeed, uint16_t rightMotorSpeed = Bas
   digitalWrite(MotorR2, HIGH);
   digitalWrite(MotorL2, LOW);   
 
-  // Serial.print(leftMotorSpeed);
-  // Serial.print(" ");
-  // Serial.print(rightMotorSpeed);
   Serial.println(" Forward");
 }
 
