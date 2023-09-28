@@ -50,7 +50,5 @@ void CrossSectionNavigate(bool lineOnCenter){
     delay(440);  
     Stop(100);
   }
-  else{
-    Serial.println("Line On CENTER.");
-  }
+  else Serial.println("Line On CENTER.");
 }
