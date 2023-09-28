@@ -18,13 +18,6 @@ const uint8_t SensorCount = 6;
 uint16_t sensorValues[SensorCount];
 
 
-//function declarations
-void LeftRotate();
-void HardLeft();
-void HardRight();
-void Forward(uint16_t leftMotorSpeed = BaseSpeed, uint16_t rightMotorSpeed = BaseSpeed);
-
-
 //***************************************************************
 void setup() {
   Serial.begin(9600);
