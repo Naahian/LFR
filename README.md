@@ -1,5 +1,5 @@
 # LFR version-1
-QTR sensor array(of 6 Ir) based Line follower Robot with basic navigation control. currently it detects 90deg turns and curved turns and navigates accordingly.
+QTR sensor array(of 6 IR) based Line follower Robot with basic navigation control. currently it can navigate through: curved line, 90deg turn, 60deg turn, "T" section and Cross Section. Among these it navigates best through curved and 90deg turns.
 
 ### Components Used
 1. QTR sensor array
