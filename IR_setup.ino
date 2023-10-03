@@ -10,7 +10,7 @@ void Calibrate() {
   digitalWrite(LED_BUILTIN, HIGH);  // turn on Arduino's LED to indicate we are in calibration mode
 
   // Call calibrate() 400 times to make calibration take about 10 seconds.
-  for (uint16_t i = 0; i < 350; i++) {
+  for (uint16_t i = 0; i < 200; i++) {
     qtr.calibrate();
   }
 
@@ -44,4 +44,8 @@ uint16_t ReadLine() {
   }
   Serial.println(position);
   return position;
+}
+
+bool lineDetected(int IRvalue){
+  return IRvalue > 500;
 }
