@@ -9,8 +9,8 @@
 #define MotorR2 8
 
 //motor speed
-#define BaseSpeed 255 * 0.65
-#define MaxSpeed 255 * 0.75
+#define BaseSpeed 255 * 0.6
+#define MaxSpeed 255 * 0.7
 
 //Sensor initial
 QTRSensors qtr;
@@ -25,12 +25,12 @@ void setup() {
   SetupQTR();
 
   LeftRotate();
-  Calibrate();
+  Calibrate(); 
   Stop(3000);
 }
 
 
 void loop() {
   Navigate();
-  delay(8);
+  delay(10);
 }
