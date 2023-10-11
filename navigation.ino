@@ -1,6 +1,6 @@
 //PID initials
 float  Kp = .085; //values worked: .115, .085 for 60% speed
-float Ki = 0;  
+float Ki = 0.000;  
 float  Kd = .078; //values worked: .09, .078 for 60% speed
 
 int P;
@@ -9,36 +9,30 @@ int D;
 int lastError = 0;
 
 void Navigate() {
-  bool hardLeft = 1;
-  bool hardRight = 1;
-  bool crossSection = 1;
-  bool lineOnCenter = 1;
+
 
   uint16_t position = qtr.readLineBlack(sensorValues);
-  
+
+  bool detected[6] = {0,0,0,0,0,0}; //for storing IR detectection status
   for (uint8_t i = 0; i < SensorCount; i++) {
-    // if none of the left 3 IR dosnt detect then no need to turn hard left
-    if (i < 3 && !lineDetected(sensorValues[i])) hardLeft = 0;
-    // if none of the right 3 IR dosnt detect then no need to turn hard right
-    else if (i >= 3 && !lineDetected(sensorValues[i])) hardRight = 0;
-    //if any of the ir is not detecting then not a crossSection
-    if(!lineDetected(sensorValues[i])) crossSection = 0;
-    if((i==2 || i==3) && !lineDetected(sensorValues[i])) lineOnCenter = 0;  
+    if(sensorValues[i] > 500) detected[i] = 1;
+    else detected[i] = 0;
   }
 
-  // if(crossSection) CrossSectionNavigate(lineOnCenter);
-  //  if(hardLeft) HardLeft();
-  // else if(hardRight) HardRight();
-  // else
-    PIDNavigate(position);
-  
-  PIDNavigate(position);
+  bool hardLeft = detected[0] && detected[1] && detected[2];
+  bool hardRight = detected[3] && detected[4] && detected[5];
+  bool crossSection = detected[0] && detected[1] && detected[2] && detected[3] && detected[4] && detected[5];
+
+  if(crossSection) PIDNavigate(position);
+  else if(hardLeft) HardLeft();
+  else if(hardRight) HardRight();
+  else PIDNavigate(position);
 }
 
 
 void PIDNavigate(uint16_t position){
   Serial.println("PID Navigate");
-  int error = 2500 - position; 
+  int error = 2500 - position; //0 - 5000 for 6 IRs thus 2500 
   
   P = error;
   I = I + error;
@@ -59,29 +53,17 @@ void PIDNavigate(uint16_t position){
   Forward(leftMotorSpeed, rightMotorSpeed);
 }
 
-// void SimpleNavigate(uint16_t position) {
-//   Serial.println("SimpleNavigate");
-//   //positino 0 to 5000 ==> line position LEFT to RIGHT
-
-//   if (position < 400) Forward(BaseSpeed * 0.08, MaxSpeed);
-//   else if (position < 1000) Forward(BaseSpeed * 0.15, BaseSpeed * 0.9);
-//   else if (position < 1900) Forward(BaseSpeed * 0.45, BaseSpeed * 0.75);
-//   else if (position >= 1900 && position <= 3100) Forward(BaseSpeed * 0.7, BaseSpeed * 0.7);
-//   else if (position > 3100 && position <= 4000) Forward(BaseSpeed * 0.75, BaseSpeed * 0.45);
-//   else if (position > 4000 && position <= 4600) Forward(BaseSpeed * 0.9, BaseSpeed * 0.15);
-//   else if (position > 4600) Forward(MaxSpeed, BaseSpeed * 0.08);
-// }
 
 void CrossSectionNavigate(bool lineOnCenter){
-  Serial.println("CrossSection");
-  
   Forward(BaseSpeed * 0.5, BaseSpeed * 0.5);
-  delay(150);
-
+  delay(200);
   if(!lineOnCenter) {
     Serial.println("T Section.");
-    HardLeft();
+    Stop(1000);
   }
   else{
     Serial.println("CROSS Section.");
-  }}
+    Forward(BaseSpeed * 0.5, BaseSpeed * 0.5);
+    delay(200);
+  }
+}
